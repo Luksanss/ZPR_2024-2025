@@ -1,45 +1,47 @@
-def tabulka(num):
-    if (num <= 0 or num > 99):
+import math
+
+def tabulka(k):
+    if (type(k) is not int or k <= 0 or k > 100):
         print("ERROR")
-        return -1 
-    
+        return -1
+     
     tabulkaRes = []
-    
-    
-    for i in range(num):
+     
+     
+    for i in range(k):
         i = i + 1 # start at 1
-        
+         
         genArr = [] # one row for tabulkaRes
-
-        for n in range(num):
+ 
+        for n in range(k):
             n = n + 1 # start at 1
-
+ 
             if (n != 1 and i != 1):
-                
-                if (n % i == 0):
-                    if (n == num):
+                 
+                if (math.gcd(n, i) > 1):
+                    if (n == k):
                         genArr.append("x")
                     else:
                         genArr.append("x|")
                 else:
-                    if (n == num):
+                    if (n == k):
                         genArr.append(" ")
                     else:
                         genArr.append(" |") # res of comparison
             else:
-                if (n == num):
+                if (n == k):
                     genArr.append(" ")
                 else:
                     genArr.append(" |") # res of comparison
-            
-            if (n == num): # add completed row
+             
+            if (n == k): # add completed row
                 tabulkaRes.append(genArr)
-                tabulkaRes.append("-" * (num + 3))
-    for i in tabulkaRes:
+                tabulkaRes.append("-" * ((2 * k) - 1))
+    for i in tabulkaRes[0:len(tabulkaRes)-1]:
         for n in i:
             print(n, end="")
         print()
-
-
-
+ 
+ 
+ 
 tabulka(4)
