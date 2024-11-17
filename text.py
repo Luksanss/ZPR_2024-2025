@@ -62,7 +62,7 @@ def serad(text, metoda, case_sensitive = False):
     # split to an array
     text = cleanText.split(" ")
     
-    # keep only words of len 3 or above and lower if not case sentivie
+    # keep only words of len 3 or above
     longWords = []
     
     for word in text:
@@ -75,17 +75,15 @@ def serad(text, metoda, case_sensitive = False):
     
     # sort by length of words
     if (metoda == 0):
-        sortedWords = []
         wordLen = {}
         
         for word in text:
             wordLen[word] = len(word)
             
-        wordLen = sorted(wordLen, reverse=True)
+        wordLen = dict(sorted(wordLen.items(), key=lambda item: (-item[1], item[0])))
         
-        for word in wordLen:
-            sortedWords.append(word)
-        return sortedWords
+        return list(wordLen.keys())
+
     # pocet souhlasek
     if (metoda == 1):
         souhlasky = ["a", "e", "i", "o", "u"]
@@ -97,14 +95,12 @@ def serad(text, metoda, case_sensitive = False):
                 if (letter in souhlasky):
                     souhlaskyCount[word] += 1
                     
-        souhlaskyCount = sorted(souhlaskyCount, reverse=True)
         # sort alphabetically if words have the same length
+        souhlaskyCount = dict(sorted(souhlaskyCount.items(), key=lambda x: (-x[1], x[0])))
         
-        souhlaskyCount = sorted(souhlaskyCount, reverse=True, key=lambda word: (len(word), word))
-        
-        #s = sorted(words, key=lambda word: (len(word), word))
-        
-        return souhlaskyCount
+        # convert to arr and return
+        return list(souhlaskyCount.keys())
+
     # cetnost nejcastejsiho pismenka
     if (metoda == 2):
         countOfLetters = {}
@@ -129,21 +125,18 @@ def serad(text, metoda, case_sensitive = False):
         
         for word in text:
             countOfMostFreqLetterInWords[word] = word.count(mostFreqLetter)
-            
-        text = dict(sorted(countOfMostFreqLetterInWords.items(), reverse=True))
-        textArr = []
-        for i in text:
-            textArr.append(i)
         
-        textArr = sorted(textArr, reverse=True, key=lambda word: (len(word), word))
-        print(text)
+        # sort in descending order on value (-x[1]), if values are equal, sort by key alphabetical order
+        countOfMostFreqLetterInWords = dict(sorted(countOfMostFreqLetterInWords.items(), key=lambda x: (-x[1], x[0])))
         
-        return textArr
+        # convert to arr and return
+        return list(countOfMostFreqLetterInWords.keys())
+    return 0
 
-# ret = historogram('Aaaach, to je kraaasa', 4)
-ret = serad('Aaaach, to je kraaasa', 0, True)
+ret = historogram('Aaaach, to je kraaasa', 4)
+ret = serad('Aaaach, to je kraaasa aaaaaaaaaaa', 0, True)
 print(ret)
-ret = serad('Aaaach, to je kraaasa', 1, False)
+ret = serad('Aaaach, to je kraaasa eio aaaaaaaach', 1, False)
 print(ret)
 ret = serad('Aaaach, to je kraaasa', 2, True)
 print(ret)
